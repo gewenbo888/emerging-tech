@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emerging Technologies — 新兴科技全景</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;600;700&family=Noto+Serif+SC:wght@200;300;400;600&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0c1020;--bg2:#101428;--bg3:#161a30;
+  --text:#d4dce8;--dim:#5a6480;--faint:#1e2440;
+  --energy:#f0a030;--info:#00b4ff;--space:#aa60ff;--matter:#00e4a0;--bio:#ff5078;--mind:#e0c040;
+  --energy-bg:rgba(240,160,48,.06);--info-bg:rgba(0,180,255,.06);
+  --space-bg:rgba(170,96,255,.06);--matter-bg:rgba(0,228,160,.06);
+  --bio-bg:rgba(255,80,120,.06);--mind-bg:rgba(224,192,64,.06);
+  --rule:rgba(212,220,232,.04);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'Outfit',sans-serif;font-weight:300;line-height:1.75;
+  overflow-x:hidden;
+}
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.012;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.6' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:300px;
+}
+.cn{font-family:'Noto Serif SC',serif;}
+.mono{font-family:'IBM Plex Mono',monospace;}
+h1,h2,h3{font-family:'Outfit',sans-serif;font-weight:200;}
+
+.rv{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
+.rv.vis{opacity:1;transform:translateY(0);}
+.rv.d1{transition-delay:.1s}.rv.d2{transition-delay:.22s}.rv.d3{transition-delay:.36s}.rv.d4{transition-delay:.5s}.rv.d5{transition-delay:.64s}
+
+section{position:relative;z-index:1;}
+
+/* ═══ NAV ═══ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  background:rgba(12,16,32,.88);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--rule);height:48px;
+  display:flex;align-items:center;padding:0 24px;gap:6px;
+  overflow-x:auto;-webkit-overflow-scrolling:touch;
+}
+nav::-webkit-scrollbar{display:none;}
+.nav-title{font-weight:600;font-size:.82rem;margin-right:12px;flex-shrink:0;border-right:1px solid var(--faint);padding-right:16px;}
+.nav-link{
+  font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--dim);cursor:pointer;padding:6px 12px;border-radius:6px;
+  transition:all .2s;flex-shrink:0;text-decoration:none;font-weight:400;
+}
+.nav-link:hover{color:var(--text);background:rgba(255,255,255,.04);}
+.nav-link.active{color:#fff;background:rgba(255,255,255,.06);}
+
+/* ═══ HERO ═══ */
+#hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  justify-content:center;align-items:center;text-align:center;
+  padding:120px 40px 80px;position:relative;overflow:hidden;
+}
+#heroCanvas{position:absolute;inset:0;width:100%;height:100%;}
+.hero-z{position:relative;z-index:2;}
+.hero-pills{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:30px;}
+.hero-pill{
+  font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;
+  padding:5px 14px;border-radius:100px;border:1px solid;font-weight:400;
+}
+.hero-pill.energy{border-color:rgba(240,160,48,.3);color:var(--energy);}
+.hero-pill.info{border-color:rgba(0,180,255,.3);color:var(--info);}
+.hero-pill.space{border-color:rgba(170,96,255,.3);color:var(--space);}
+.hero-pill.matter{border-color:rgba(0,228,160,.3);color:var(--matter);}
+.hero-pill.bio{border-color:rgba(255,80,120,.3);color:var(--bio);}
+.hero-pill.mind{border-color:rgba(224,192,64,.3);color:var(--mind);}
+
+h1.hero-t{font-size:clamp(2.4rem,6vw,4.5rem);font-weight:200;line-height:1.1;letter-spacing:-.02em;}
+.hero-cn{font-family:'Noto Serif SC',serif;font-weight:200;font-size:clamp(1rem,2.2vw,1.5rem);color:var(--dim);margin-top:8px;}
+.hero-desc{max-width:600px;margin-top:24px;font-size:.95rem;color:var(--dim);}
+
+/* ═══ SECTIONS ═══ */
+.sec{max-width:1200px;margin:0 auto;padding:90px 40px;border-top:1px solid var(--rule);}
+@media(max-width:700px){.sec{padding:60px 20px;}}
+.sec-label{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;margin-bottom:1rem;}
+h2{font-size:clamp(1.6rem,3.2vw,2.6rem);margin-bottom:.3rem;font-weight:200;}
+.h2cn{font-family:'Noto Serif SC',serif;font-weight:200;font-size:clamp(.88rem,1.6vw,1.1rem);color:var(--dim);margin-bottom:2rem;}
+
+/* ═══ DOMAIN CARD ═══ */
+.domain-card{
+  background:var(--bg2);border:1px solid var(--faint);border-radius:18px;
+  padding:40px 36px;margin-bottom:28px;position:relative;overflow:hidden;
+  transition:border-color .3s,box-shadow .3s;
+}
+.domain-card:hover{box-shadow:0 16px 60px rgba(0,0,0,.3);}
+.domain-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--accent);opacity:.5;transition:opacity .3s;
+}
+.domain-card:hover::before{opacity:1;}
+.domain-card .icon-row{display:flex;align-items:center;gap:16px;margin-bottom:20px;}
+.domain-icon{
+  width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;flex-shrink:0;
+}
+.domain-card h3{font-size:1.5rem;font-weight:300;}
+.domain-card .h3cn{font-family:'Noto Serif SC',serif;font-weight:200;font-size:.9rem;color:var(--dim);}
+
+.domain-goal{
+  margin:20px 0;padding:16px 20px;border-radius:10px;
+  border-left:3px solid var(--accent);font-style:italic;font-size:.95rem;
+}
+.domain-goal .goal-cn{font-family:'Noto Serif SC',serif;font-style:normal;font-size:.85rem;color:var(--dim);margin-top:4px;}
+
+.tech-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;}
+.tech-chip{
+  font-family:'IBM Plex Mono',monospace;font-size:.68rem;
+  padding:5px 14px;border-radius:6px;font-weight:400;
+  border:1px solid;transition:all .2s;
+}
+.tech-chip:hover{transform:translateY(-1px);}
+
+/* Domain colors */
+.d-energy{--accent:var(--energy);}
+.d-energy .domain-icon{background:var(--energy-bg);border:1px solid rgba(240,160,48,.2);color:var(--energy);}
+.d-energy .domain-goal{background:var(--energy-bg);}
+.d-energy .tech-chip{border-color:rgba(240,160,48,.2);color:var(--energy);background:var(--energy-bg);}
+.d-energy .tech-chip:hover{background:rgba(240,160,48,.12);}
+
+.d-info{--accent:var(--info);}
+.d-info .domain-icon{background:var(--info-bg);border:1px solid rgba(0,180,255,.2);color:var(--info);}
+.d-info .domain-goal{background:var(--info-bg);}
+.d-info .tech-chip{border-color:rgba(0,180,255,.2);color:var(--info);background:var(--info-bg);}
+.d-info .tech-chip:hover{background:rgba(0,180,255,.12);}
+
+.d-space{--accent:var(--space);}
+.d-space .domain-icon{background:var(--space-bg);border:1px solid rgba(170,96,255,.2);color:var(--space);}
+.d-space .domain-goal{background:var(--space-bg);}
+.d-space .tech-chip{border-color:rgba(170,96,255,.2);color:var(--space);background:var(--space-bg);}
+.d-space .tech-chip:hover{background:rgba(170,96,255,.12);}
+
+.d-matter{--accent:var(--matter);}
+.d-matter .domain-icon{background:var(--matter-bg);border:1px solid rgba(0,228,160,.2);color:var(--matter);}
+.d-matter .domain-goal{background:var(--matter-bg);}
+.d-matter .tech-chip{border-color:rgba(0,228,160,.2);color:var(--matter);background:var(--matter-bg);}
+.d-matter .tech-chip:hover{background:rgba(0,228,160,.12);}
+
+.d-bio{--accent:var(--bio);}
+.d-bio .domain-icon{background:var(--bio-bg);border:1px solid rgba(255,80,120,.2);color:var(--bio);}
+.d-bio .domain-goal{background:var(--bio-bg);}
+.d-bio .tech-chip{border-color:rgba(255,80,120,.2);color:var(--bio);background:var(--bio-bg);}
+.d-bio .tech-chip:hover{background:rgba(255,80,120,.12);}
+
+.d-mind{--accent:var(--mind);}
+.d-mind .domain-icon{background:var(--mind-bg);border:1px solid rgba(224,192,64,.2);color:var(--mind);}
+.d-mind .domain-goal{background:var(--mind-bg);}
+.d-mind .tech-chip{border-color:rgba(224,192,64,.2);color:var(--mind);background:var(--mind-bg);}
+.d-mind .tech-chip:hover{background:rgba(224,192,64,.12);}
+
+/* ═══ EVOLUTION TIMELINE ═══ */
+.evo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;margin-top:32px;}
+.evo-card{
+  background:var(--bg2);border:1px solid var(--faint);border-radius:14px;
+  padding:24px 22px;transition:border-color .3s;
+}
+.evo-card:hover{border-color:rgba(255,255,255,.08);}
+.evo-card h3{font-size:1.05rem;font-weight:400;margin-bottom:.3rem;}
+.evo-card .h3cn{font-family:'Noto Serif SC',serif;font-weight:200;font-size:.82rem;color:var(--dim);margin-bottom:12px;}
+.evo-items{display:flex;flex-wrap:wrap;gap:6px;}
+.evo-item{
+  font-family:'IBM Plex Mono',monospace;font-size:.62rem;
+  padding:4px 10px;border-radius:5px;
+  background:rgba(255,255,255,.03);border:1px solid var(--faint);
+  color:var(--dim);transition:all .2s;
+}
+.evo-item:hover{color:var(--text);border-color:rgba(255,255,255,.1);}
+.evo-arrow{color:var(--dim);font-size:.7rem;display:flex;align-items:center;}
+
+/* ═══ CONVERGENCE ═══ */
+.conv-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:32px;}
+@media(max-width:700px){.conv-grid{grid-template-columns:1fr;}}
+.conv-card{
+  background:var(--bg2);border:1px solid var(--faint);border-radius:14px;
+  padding:28px 24px;position:relative;overflow:hidden;
+  transition:border-color .3s;
+}
+.conv-card:hover{border-color:rgba(0,228,160,.15);}
+.conv-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 80% 80%,rgba(0,228,160,.03),transparent 60%);
+  pointer-events:none;
+}
+.conv-num{
+  font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.15em;
+  color:var(--matter);opacity:.5;margin-bottom:8px;text-transform:uppercase;
+}
+.conv-card h3{font-size:1.1rem;font-weight:400;margin-bottom:.4rem;}
+.conv-card .h3cn{font-family:'Noto Serif SC',serif;font-weight:200;font-size:.85rem;color:var(--dim);}
+.conv-pair{
+  display:flex;align-items:center;gap:10px;margin-top:14px;
+  font-size:.85rem;
+}
+.conv-side{
+  flex:1;padding:10px 14px;border-radius:8px;text-align:center;
+  font-weight:400;font-size:.82rem;
+}
+.conv-side.a{background:rgba(0,180,255,.06);border:1px solid rgba(0,180,255,.12);color:var(--info);}
+.conv-side.b{background:rgba(255,80,120,.06);border:1px solid rgba(255,80,120,.12);color:var(--bio);}
+.conv-merge{color:var(--matter);font-size:1rem;flex-shrink:0;}
+
+/* ═══ ENGINE SECTION ═══ */
+.engine-flow{
+  display:flex;align-items:center;gap:0;margin-top:32px;overflow-x:auto;
+  padding-bottom:10px;
+}
+.engine-step{
+  text-align:center;padding:20px 16px;min-width:120px;flex-shrink:0;
+}
+.engine-step .label{font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.08em;color:var(--dim);margin-bottom:6px;text-transform:uppercase;}
+.engine-step .name{font-weight:400;font-size:.88rem;}
+.engine-step .cn-name{font-family:'Noto Serif SC',serif;font-size:.75rem;color:var(--dim);}
+.engine-arrow{color:var(--space);font-size:1rem;flex-shrink:0;opacity:.3;}
+.engine-warp{
+  text-align:center;padding:20px;min-width:160px;flex-shrink:0;
+  background:var(--space-bg);border:1px solid rgba(170,96,255,.2);border-radius:12px;
+}
+.engine-warp .name{color:var(--space);font-weight:600;}
+
+/* ═══ GRAND TABLE ═══ */
+.grand-wrap{overflow-x:auto;border:1px solid var(--faint);border-radius:16px;background:var(--bg2);margin-top:32px;}
+.grand-table{width:100%;border-collapse:collapse;min-width:800px;font-size:.84rem;}
+.grand-table th{
+  font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:.12em;
+  text-transform:uppercase;padding:12px 16px;text-align:left;
+  border-bottom:2px solid var(--faint);color:var(--dim);
+  position:sticky;top:0;background:var(--bg3);z-index:5;
+}
+.grand-table td{padding:14px 16px;border-bottom:1px solid var(--rule);vertical-align:top;line-height:1.65;}
+.grand-table tr:hover td{background:rgba(0,228,160,.015);}
+.grand-table .d-label{font-weight:600;white-space:nowrap;}
+.grand-table .cn-sub{font-family:'Noto Serif SC',serif;font-weight:200;font-size:.72rem;color:var(--dim);display:block;margin-top:2px;}
+
+/* ═══ FOOTER ═══ */
+footer{text-align:center;padding:50px 40px;border-top:1px solid var(--rule);max-width:1200px;margin:0 auto;}
+footer p{font-size:.75rem;color:var(--dim);}
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <div class="nav-title">Emerging Tech</div>
+  <a class="nav-link" href="#domains">Domains</a>
+  <a class="nav-link" href="#evolution">Evolution</a>
+  <a class="nav-link" href="#engines">Engines</a>
+  <a class="nav-link" href="#convergence">2046</a>
+  <a class="nav-link" href="#overview">Overview</a>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-z">
+    <div class="hero-pills rv">
+      <span class="hero-pill energy">Energy</span>
+      <span class="hero-pill info">Information</span>
+      <span class="hero-pill space">Space-Time</span>
+      <span class="hero-pill matter">Matter</span>
+      <span class="hero-pill bio">Biology</span>
+      <span class="hero-pill mind">Consciousness</span>
+    </div>
+    <h1 class="hero-t rv d1">Emerging Technologies</h1>
+    <div class="hero-cn rv d2">新兴科技全景 — 六大领域的技术演化与未来融合</div>
+    <p class="hero-desc rv d3">
+      Six fundamental domains &mdash; energy, information, space-time, matter, biology, and consciousness &mdash;
+      are converging toward a singular technological future. This is the map.
+    </p>
+    <p class="hero-desc rv d4 cn" style="font-size:.85rem;opacity:.5;margin-top:.6rem;">
+      六大基本领域——能源、信息、时空、物质、生物与意识——正在汇聚向一个奇点般的科技未来。这是那张地图。
+    </p>
+  </div>
+</section>
+
+<!-- ═══ FIVE DOMAINS ═══ -->
+<div class="sec" id="domains">
+  <div class="sec-label rv" style="color:var(--matter);">Table 1 &mdash; Five Frontiers 五大前沿</div>
+  <h2 class="rv d1">The Five Technological Frontiers</h2>
+  <div class="h2cn rv d2">五大科技前沿领域</div>
+
+  <!-- ENERGY -->
+  <div class="domain-card d-energy rv" style="margin-top:8px;">
+    <div class="icon-row">
+      <div class="domain-icon">&#9889;</div>
+      <div><h3>Energy <span style="opacity:.4">/</span> Sustainable Energy</h3><div class="h3cn">能源 &mdash; 可持续能源</div></div>
+    </div>
+    <div class="domain-goal">
+      Achieve sustainable development for the Earth and the universe
+      <div class="goal-cn">实现地球和宇宙的可持续发展</div>
+    </div>
+    <div class="tech-chips">
+      <span class="tech-chip">Photovoltaics 光伏</span>
+      <span class="tech-chip">Lithium Batteries 锂电池</span>
+      <span class="tech-chip">Hydrogen Fuel Cells 氢燃料电池</span>
+      <span class="tech-chip">Heat Pumps 热泵</span>
+      <span class="tech-chip">Electric Vehicles 电动汽车</span>
+      <span class="tech-chip">Controllable Nuclear Fusion 可控核聚变</span>
+      <span class="tech-chip">Dyson Spheres 戴森球</span>
+    </div>
+  </div>
+
+  <!-- INFORMATION -->
+  <div class="domain-card d-info rv">
+    <div class="icon-row">
+      <div class="domain-icon">&#129302;</div>
+      <div><h3>Information <span style="opacity:.4">/</span> Artificial Intelligence</h3><div class="h3cn">信息 &mdash; 人工智能</div></div>
+    </div>
+    <div class="domain-goal">
+      Achieve a comprehensive enhancement of human intelligence
+      <div class="goal-cn">实现人类智能的全面提升</div>
+    </div>
+    <div class="tech-chips">
+      <span class="tech-chip">Chips 芯片</span>
+      <span class="tech-chip">Digital Currency 数字货币</span>
+      <span class="tech-chip">Generative AI 生成式AI</span>
+      <span class="tech-chip">Virtual Reality 虚拟现实</span>
+      <span class="tech-chip">Autonomous Driving 自动驾驶</span>
+      <span class="tech-chip">Robotics 机器人</span>
+      <span class="tech-chip">Quantum Computing 量子计算</span>
+    </div>
+  </div>
+
+  <!-- SPACE-TIME -->
+  <div class="domain-card d-space rv">
+    <div class="icon-row">
+      <div class="domain-icon">&#128640;</div>
+      <div><h3>Space-Time <span style="opacity:.4">/</span> Exploration</h3><div class="h3cn">时空 &mdash; 时空探索</div></div>
+    </div>
+    <div class="domain-goal">
+      Establish an interstellar civilization
+      <div class="goal-cn">建立星际文明</div>
+    </div>
+    <div class="tech-chips">
+      <span class="tech-chip">Electromagnetic Launch 电磁发射</span>
+      <span class="tech-chip">Reusable Rockets 可回收火箭</span>
+      <span class="tech-chip">Warp Drive 曲速引擎</span>
+      <span class="tech-chip">Space Migration 太空移民</span>
+      <span class="tech-chip">Time Travel 时间旅行</span>
+      <span class="tech-chip">Dimensional Traversal 维度穿越</span>
+    </div>
+  </div>
+
+  <!-- MATTER -->
+  <div class="domain-card d-matter rv">
+    <div class="icon-row">
+      <div class="domain-icon">&#9883;</div>
+      <div><h3>Matter <span style="opacity:.4">/</span> Engineering</h3><div class="h3cn">物质 &mdash; 物质工程</div></div>
+    </div>
+    <div class="domain-goal">
+      Explore and understand the multiverse
+      <div class="goal-cn">探索和理解多元宇宙</div>
+    </div>
+    <div class="tech-chips">
+      <span class="tech-chip">Nanotechnology 纳米技术</span>
+      <span class="tech-chip">3D Printing 3D打印</span>
+      <span class="tech-chip">Superconductors 超导体</span>
+      <span class="tech-chip">Graphene 石墨烯</span>
+      <span class="tech-chip">Quantum Dots 量子点</span>
+    </div>
+  </div>
+
+  <!-- BIOLOGY -->
+  <div class="domain-card d-bio rv">
+    <div class="icon-row">
+      <div class="domain-icon">&#129516;</div>
+      <div><h3>Biology <span style="opacity:.4">/</span> Engineering</h3><div class="h3cn">生物 &mdash; 生物工程</div></div>
+    </div>
+    <div class="domain-goal">
+      Improve human quality of life and promote social progress
+      <div class="goal-cn">提升人类生活质量、促进社会进步</div>
+    </div>
+    <div class="tech-chips">
+      <span class="tech-chip">Gene Editing 基因编辑</span>
+      <span class="tech-chip">Brain&ndash;Computer Interfaces 脑机接口</span>
+      <span class="tech-chip">Synthetic Biology 合成生物学</span>
+      <span class="tech-chip">Longevity &amp; Anti-Aging 长寿与抗衰老</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ EVOLUTION TIMELINES ═══ -->
+<div class="sec" id="evolution">
+  <div class="sec-label rv" style="color:var(--info);">Table 2 &mdash; Technology Evolution 技术演化</div>
+  <h2 class="rv d1">How Each Domain Evolved</h2>
+  <div class="h2cn rv d2">每个领域的技术演化路径</div>
+
+  <div class="evo-grid">
+    <div class="evo-card rv" style="border-top:3px solid var(--info);">
+      <h3 style="color:var(--info);">Information 信息</h3>
+      <div class="h3cn">从语言到GPT</div>
+      <div class="evo-items">
+        <span class="evo-item">Language 语言</span><span class="evo-arrow">&rarr;</span>
+        <span class="evo-item">Visual Arts 视觉艺术</span><span class="evo-arrow">&rarr;</span>
+        <span class="evo-item">Music 音乐</span><span class="evo-arrow">&rarr;</span>
+        <span class="evo-item">Writing 文字</span><span class="evo-arrow">&rarr;</span>
+        <span class="evo-item">Mathematics 数学</span><span class="evo-arrow">&rarr;</span>
+        <span class="evo-item">Programming 编程语言</span><span class="evo-arrow">&rarr;</span>
+        <span class="evo-item" style="border-color:rgba(0,180,255,.3);color:var(--info);">GPT</span>
+      </div>
+    </div>
+
+    <div class="evo-card rv d1" style="border-top:3px solid var(--matter);">
+      <h3 style="color:var(--matter);">Matter 物质</h3>
+      <div class="h3cn">从石器到纳米</div>
+      <div class="evo-items">
+        <span class="evo-item">Stone 石</span><span class="evo-arrow">&rarr;</span>
+        <span class="evo-item">Copper 铜</span><span class="evo-arrow">&rarr;</span>
+        <span class="evo-item">Iron 铁</span><span class="evo-arrow">&rarr;</span>
+        <span class="evo-item">Carbon 碳</span><span class="evo-arrow">&rarr;</span>
+        <span class="evo-item">Silicon 硅</span><span class="evo-arrow">&rarr;</span>
+        <span class="evo-item">Lithium 锂</span><span class="evo-arrow">&rarr;</span>
+        <span class="evo-item">Hydrogen 氢</span><span class="evo-arrow">&rarr;</span>
+        <span class="evo-item" style="border-color:rgba(0,228,160,.3);color:var(--matter);">Nano 纳米</span>
+      </div>
+    </div>
+
+    <div class="evo-card rv d2" style="border-top:3px solid var(--energy);">
+      <h3 style="color:var(--energy);">Energy 能源</h3>
+      <div class="h3cn">从火到核能</div>
+      <div class="evo-items">
+        <span class="evo-item">Fire 火</span><span class="evo-arrow">&rarr;</span>
+        <span class="evo-item">Heat 热</span><span class="evo-arrow">&rarr;</span>
+        <span class="evo-item">Electricity 电</span><span class="evo-arrow">&rarr;</span>
+        <span class="evo-item">Light 光</span><span class="evo-arrow">&rarr;</span>
+        <span class="evo-item" style="border-color:rgba(240,160,48,.3);color:var(--energy);">Nuclear 核能</span>
+      </div>
+    </div>
+
+    <div class="evo-card rv d3" style="border-top:3px solid var(--bio);">
+      <h3 style="color:var(--bio);">Biology 生物</h3>
+      <div class="h3cn">从驯化到脑机接口</div>
+      <div class="evo-items">
+        <span class="evo-item">Domestication 驯化动植物</span><span class="evo-arrow">&rarr;</span>
+        <span class="evo-item">Microbial Control 微生物控制</span><span class="evo-arrow">&rarr;</span>
+        <span class="evo-item">Gene Editing 基因编辑</span><span class="evo-arrow">&rarr;</span>
+        <span class="evo-item" style="border-color:rgba(255,80,120,.3);color:var(--bio);">Brain&ndash;Computer 脑机接口</span>
+      </div>
+    </div>
+
+    <div class="evo-card rv d4" style="border-top:3px solid var(--mind);">
+      <h3 style="color:var(--mind);">Consciousness 意识</h3>
+      <div class="h3cn">从金融到虚拟现实</div>
+      <div class="evo-items">
+        <span class="evo-item">Finance 金融</span><span class="evo-arrow">&rarr;</span>
+        <span class="evo-item">Trade 贸易</span><span class="evo-arrow">&rarr;</span>
+        <span class="evo-item">Culture 文化</span><span class="evo-arrow">&rarr;</span>
+        <span class="evo-item" style="border-color:rgba(224,192,64,.3);color:var(--mind);">Virtual Reality 虚拟现实</span>
+      </div>
+    </div>
+
+    <div class="evo-card rv d5" style="border-top:3px solid var(--mind);">
+      <h3 style="color:var(--mind);">Forms of Consciousness 意识形态</h3>
+      <div class="h3cn">意识觉醒的四个阶段</div>
+      <div class="evo-items">
+        <span class="evo-item">Mirror Test 镜像测试</span><span class="evo-arrow">&rarr;</span>
+        <span class="evo-item">Axial Age 轴心文明</span><span class="evo-arrow">&rarr;</span>
+        <span class="evo-item">Tech Awakening 科技觉醒</span><span class="evo-arrow">&rarr;</span>
+        <span class="evo-item" style="border-color:rgba(224,192,64,.3);color:var(--mind);">Grand Convergence 大融合</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TECH → CORE PRODUCTS -->
+  <h3 class="rv" style="margin-top:48px;font-size:1.2rem;font-weight:300;">Technology &rarr; Core Products</h3>
+  <div class="h2cn rv d1" style="margin-bottom:16px;">技术 &rarr; 核心产品</div>
+  <div class="evo-grid rv d2">
+    <div class="evo-card" style="border-top:3px solid var(--energy);">
+      <h3 style="color:var(--energy);font-size:.95rem;">Fire &rarr; <strong>Rocket Engines</strong></h3>
+      <div class="h3cn">火 &rarr; 火箭发动机</div>
+    </div>
+    <div class="evo-card" style="border-top:3px solid var(--energy);">
+      <h3 style="color:var(--energy);font-size:.95rem;">Heat &rarr; <strong>Jet Engines</strong></h3>
+      <div class="h3cn">热 &rarr; 喷气发动机</div>
+    </div>
+    <div class="evo-card" style="border-top:3px solid var(--info);">
+      <h3 style="color:var(--info);font-size:.95rem;">Electricity &rarr; <strong>2nm Chips</strong></h3>
+      <div class="h3cn">电 &rarr; 2纳米芯片</div>
+    </div>
+    <div class="evo-card" style="border-top:3px solid var(--info);">
+      <h3 style="color:var(--info);font-size:.95rem;">Light &rarr; <strong>EUV Lithography</strong></h3>
+      <div class="h3cn">光 &rarr; 极紫外光刻机</div>
+    </div>
+    <div class="evo-card" style="border-top:3px solid var(--energy);">
+      <h3 style="color:var(--energy);font-size:.95rem;">Nuclear &rarr; <strong>Fusion Reactors</strong></h3>
+      <div class="h3cn">核 &rarr; 可控核聚变</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ENGINES ═══ -->
+<div class="sec" id="engines">
+  <div class="sec-label rv" style="color:var(--space);">Space-Time 时空</div>
+  <h2 class="rv d1">The Evolution of Engines</h2>
+  <div class="h2cn rv d2">引擎发展的趋势 — 从化学能到弯曲时空</div>
+
+  <p class="rv d3" style="max-width:660px;color:var(--dim);font-size:.92rem;">
+    Previous engines relied on chemical energy, thermal energy, and electromagnetic force to convert energy into motion.
+    Warp engines, however, bend space-time itself.
+  </p>
+  <p class="rv d3 cn" style="max-width:660px;color:rgba(212,220,232,.3);font-size:.84rem;margin-top:.5rem;">
+    以前的引擎依靠化学能、热能和电磁力将能量转化为运动。而曲速引擎则弯曲时空本身。
+  </p>
+
+  <div class="engine-flow rv d4">
+    <div class="engine-step">
+      <div class="label" style="color:var(--energy);">Chemical</div>
+      <div class="name">Rocket Engine</div>
+      <div class="cn-name">火箭发动机</div>
+    </div>
+    <div class="engine-arrow">&rarr;</div>
+    <div class="engine-step">
+      <div class="label" style="color:var(--energy);">Thermal</div>
+      <div class="name">Jet Engine</div>
+      <div class="cn-name">喷气发动机</div>
+    </div>
+    <div class="engine-arrow">&rarr;</div>
+    <div class="engine-step">
+      <div class="label" style="color:var(--info);">Electromagnetic</div>
+      <div class="name">Ion Drive</div>
+      <div class="cn-name">离子推进</div>
+    </div>
+    <div class="engine-arrow">&rarr;</div>
+    <div class="engine-step">
+      <div class="label" style="color:var(--energy);">Nuclear</div>
+      <div class="name">Fusion Engine</div>
+      <div class="cn-name">聚变引擎</div>
+    </div>
+    <div class="engine-arrow" style="font-size:1.4rem;color:var(--space);opacity:.6;">&#10230;</div>
+    <div class="engine-warp">
+      <div class="label" style="color:var(--space);">Space-Time</div>
+      <div class="name">Warp Drive</div>
+      <div class="cn-name" style="color:var(--space);opacity:.7;">曲速引擎</div>
+      <div style="font-size:.65rem;color:var(--dim);margin-top:6px;">Bends space-time itself<br>弯曲时空本身</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CONVERGENCE 2046 ═══ -->
+<div class="sec" id="convergence">
+  <div class="sec-label rv" style="color:var(--matter);">The Four Major Convergences 四大融合</div>
+  <h2 class="rv d1">Grand Convergence <span style="color:var(--matter);">2046</span></h2>
+  <div class="h2cn rv d2">2046年四大融合</div>
+
+  <div class="conv-grid">
+    <div class="conv-card rv">
+      <div class="conv-num">Convergence I</div>
+      <h3>Capitalism &amp; Socialism</h3>
+      <div class="h3cn">资本主义与社会主义</div>
+      <div class="conv-pair">
+        <div class="conv-side a">Capitalism<br><span class="cn" style="font-size:.72rem;">资本主义</span></div>
+        <div class="conv-merge">&#8652;</div>
+        <div class="conv-side b">Socialism<br><span class="cn" style="font-size:.72rem;">社会主义</span></div>
+      </div>
+    </div>
+
+    <div class="conv-card rv d1">
+      <div class="conv-num">Convergence II</div>
+      <h3>AI &amp; Human Consciousness</h3>
+      <div class="h3cn">AI意识与人类意识</div>
+      <div class="conv-pair">
+        <div class="conv-side a">AI Consciousness<br><span class="cn" style="font-size:.72rem;">AI意识</span></div>
+        <div class="conv-merge">&#8652;</div>
+        <div class="conv-side b">Human Consciousness<br><span class="cn" style="font-size:.72rem;">人类意识</span></div>
+      </div>
+    </div>
+
+    <div class="conv-card rv d2">
+      <div class="conv-num">Convergence III</div>
+      <h3>Quantum Mechanics &amp; Relativity</h3>
+      <div class="h3cn">量子力学与相对论</div>
+      <div class="conv-pair">
+        <div class="conv-side a">Quantum Mechanics<br><span class="cn" style="font-size:.72rem;">量子力学</span></div>
+        <div class="conv-merge">&#8652;</div>
+        <div class="conv-side b">General Relativity<br><span class="cn" style="font-size:.72rem;">广义相对论</span></div>
+      </div>
+    </div>
+
+    <div class="conv-card rv d3">
+      <div class="conv-num">Convergence IV</div>
+      <h3>Digital &amp; Physical Worlds</h3>
+      <div class="h3cn">数字世界与物理世界</div>
+      <div class="conv-pair">
+        <div class="conv-side a">Digital World<br><span class="cn" style="font-size:.72rem;">数字世界</span></div>
+        <div class="conv-merge">&#8652;</div>
+        <div class="conv-side b">Physical World<br><span class="cn" style="font-size:.72rem;">物理世界</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ GRAND TABLE ═══ -->
+<div class="sec" id="overview">
+  <div class="sec-label rv" style="color:var(--matter);">Complete Overview 完整总览</div>
+  <h2 class="rv d1">All Domains at a Glance</h2>
+  <div class="h2cn rv d2">六大领域一览</div>
+
+  <div class="grand-wrap rv d3">
+    <table class="grand-table">
+      <thead>
+        <tr>
+          <th>Domain 领域</th>
+          <th>Focus 方向</th>
+          <th>Key Technologies 核心技术</th>
+          <th>Goal 目标</th>
+          <th>Evolution 演化路径</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="d-label" style="color:var(--energy);">Energy<span class="cn-sub">能源</span></td>
+          <td>Sustainable Energy<span class="cn-sub">可持续能源</span></td>
+          <td>Photovoltaics, Li batteries, H2 fuel cells, heat pumps, EVs, fusion, Dyson spheres</td>
+          <td>Sustainable development for Earth &amp; universe<span class="cn-sub">地球和宇宙的可持续发展</span></td>
+          <td>Fire &rarr; Heat &rarr; Electricity &rarr; Light &rarr; Nuclear</td>
+        </tr>
+        <tr>
+          <td class="d-label" style="color:var(--info);">Information<span class="cn-sub">信息</span></td>
+          <td>Artificial Intelligence<span class="cn-sub">人工智能</span></td>
+          <td>Chips, crypto, GenAI, VR, autonomous driving, robotics, quantum computing</td>
+          <td>Comprehensive enhancement of human intelligence<span class="cn-sub">人类智能的全面提升</span></td>
+          <td>Language &rarr; Art &rarr; Music &rarr; Writing &rarr; Math &rarr; Code &rarr; GPT</td>
+        </tr>
+        <tr>
+          <td class="d-label" style="color:var(--space);">Space-Time<span class="cn-sub">时空</span></td>
+          <td>Space-Time Exploration<span class="cn-sub">时空探索</span></td>
+          <td>EM launch, reusable rockets, warp drive, space migration, time travel</td>
+          <td>Establish interstellar civilization<span class="cn-sub">建立星际文明</span></td>
+          <td>Rocket &rarr; Jet &rarr; Ion &rarr; Fusion &rarr; Warp</td>
+        </tr>
+        <tr>
+          <td class="d-label" style="color:var(--matter);">Matter<span class="cn-sub">物质</span></td>
+          <td>Matter Engineering<span class="cn-sub">物质工程</span></td>
+          <td>Nanotechnology, 3D printing, superconductors, graphene, quantum dots</td>
+          <td>Explore the multiverse<span class="cn-sub">探索多元宇宙</span></td>
+          <td>Stone &rarr; Cu &rarr; Fe &rarr; C &rarr; Si &rarr; Li &rarr; H &rarr; Nano</td>
+        </tr>
+        <tr>
+          <td class="d-label" style="color:var(--bio);">Biology<span class="cn-sub">生物</span></td>
+          <td>Biological Engineering<span class="cn-sub">生物工程</span></td>
+          <td>Gene editing, BCI, synthetic biology, longevity</td>
+          <td>Improve quality of life<span class="cn-sub">提升人类生活质量</span></td>
+          <td>Domestication &rarr; Microbes &rarr; Genes &rarr; BCI</td>
+        </tr>
+        <tr>
+          <td class="d-label" style="color:var(--mind);">Consciousness<span class="cn-sub">意识</span></td>
+          <td>Awakening<span class="cn-sub">觉醒</span></td>
+          <td>Finance, trade, culture, virtual reality</td>
+          <td>Grand Convergence 2046<span class="cn-sub">2046大融合</span></td>
+          <td>Mirror &rarr; Axial Age &rarr; Tech Awakening &rarr; Convergence</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<footer>
+  <p>Emerging Technologies &mdash; 新兴科技全景</p>
+  <p style="margin-top:4px;opacity:.4;">&copy; 2026</p>
+  <p style="margin-top:.8rem;"><a href="https://github.com/gewenbo888/emerging-tech" target="_blank" rel="noopener" style="color:var(--dim);font-size:.7rem;letter-spacing:.1em;text-decoration:none;border:1px solid var(--faint);padding:6px 16px;border-radius:100px;transition:all .3s;display:inline-block;" onmouseover="this.style.borderColor='rgba(0,228,160,.3)';this.style.color='var(--matter)'" onmouseout="this.style.borderColor='var(--faint)';this.style.color='var(--dim)'">View on GitHub &rarr;</a></p>
+</footer>
+
+<script>
+// ─ Reveal ─
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:.06});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+
+// ─ Nav active ─
+const navLinks=document.querySelectorAll('.nav-link');
+const secs=document.querySelectorAll('.sec[id]');
+const navObs=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(e.isIntersecting){
+      navLinks.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id));
+    }
+  });
+},{threshold:.12,rootMargin:'-48px 0px -40% 0px'});
+secs.forEach(s=>navObs.observe(s));
+
+// ─ Hero particle canvas ─
+(function(){
+  const c=document.getElementById('heroCanvas');
+  const ctx=c.getContext('2d');
+  let W,H;
+  function resize(){W=c.width=c.offsetWidth;H=c.height=c.offsetHeight;}
+  resize();window.addEventListener('resize',resize);
+
+  const colors=['#f0a030','#00b4ff','#aa60ff','#00e4a0','#ff5078','#e0c040'];
+  const particles=Array.from({length:90},()=>({
+    x:Math.random()*2000,y:Math.random()*2000,
+    vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,
+    r:Math.random()*2+.5,
+    color:colors[Math.floor(Math.random()*colors.length)]
+  }));
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    particles.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;
+      if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.color;ctx.globalAlpha=.2;ctx.fill();ctx.globalAlpha=1;
+    });
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<100){
+          ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);
+          ctx.lineTo(particles[j].x,particles[j].y);
+          ctx.strokeStyle=particles[i].color;
+          ctx.globalAlpha=.04*(1-d/100);ctx.lineWidth=.5;ctx.stroke();
+          ctx.globalAlpha=1;
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+</body>
+</html>
